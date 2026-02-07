@@ -1,6 +1,16 @@
-# Static Kanban (file-driven) — Shareable Template
+# Static Kanban (file-driven) — OpenClaw-friendly Template
 
 This is a tiny **static** Kanban board.
+
+## Why this exists (the real use case)
+This board is designed to pair nicely with an **OpenClaw** instance.
+
+Idea: keep a human-readable, always-updated view of what your agent is working on (and what’s next), without needing a database or a heavy Kanban product.
+
+Typical flow:
+- You (or your OpenClaw agent) edits `board.json`.
+- The board is deployed to static hosting.
+- You share the URL with collaborators/friends ("here’s what the agent is doing right now").
 
 - The **single source of truth** is `board.json`.
 - The UI is plain HTML/CSS/JS (`index.html`, `styles.css`, `app.js`).
@@ -106,10 +116,10 @@ Run:
 
 This repo/folder itself is **not** an OpenClaw skill.
 
-But an OpenClaw agent can help you by:
-- drafting/editing `board.json`
-- moving cards between columns
-- validating against `board.schema.json`
-- running the deploy script
+But it’s intentionally structured so an OpenClaw agent can operate it safely and predictably:
+- draft/edit `board.json` as the single source of truth
+- move cards between columns (e.g. backlog → in_progress → done)
+- validate the JSON against `board.schema.json`
+- deploy the updated static files (and optionally auto-deploy on change)
 
-If you want that packaged as a reusable capability, you’d create an OpenClaw **skill** that documents those steps and provides safe helper commands.
+If you want a one-command experience, package those steps as an OpenClaw **skill** (docs + safe helper commands).
