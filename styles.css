@@ -416,3 +416,28 @@ h1{
 }
 
 .small{ font-size:12px; color: var(--muted) }
+
+.credit{
+  padding: 10px 18px 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.credit a{
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(255,255,255,.28);
+}
+
+:root[data-theme="light"] .credit a{
+  border-bottom-color: rgba(10,20,48,.25);
+}
+
+.credit a:hover{
+  border-bottom-color: rgba(255,255,255,.60);
+}
+
+:root[data-theme="light"] .credit a:hover{
+  border-bottom-color: rgba(10,20,48,.45);
+}
+
