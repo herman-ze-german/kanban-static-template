@@ -418,26 +418,105 @@ h1{
 .small{ font-size:12px; color: var(--muted) }
 
 .credit{
-  padding: 10px 18px 18px;
-  color: var(--muted);
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 20;
   font-size: 12px;
+  color: var(--muted);
 }
 
-.credit a{
-  color: var(--text);
+.creditWrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.creditInfo{
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+
+  backdrop-filter: blur(var(--blur)) saturate(1.15);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.15);
+
+  color: var(--muted);
+  text-decoration: none;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.12) inset,
+    0 10px 22px rgba(0,0,0,.18);
+
+  opacity: .65;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.creditInfo:hover,
+.creditWrap:focus-within .creditInfo{
+  opacity: .95;
+  transform: translateY(-1px);
+}
+
+.creditBubble{
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: max-content;
+  max-width: min(520px, calc(100vw - 24px));
+
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  border: 1px solid var(--stroke);
+  background: rgba(10,20,48,.72);
+
+  backdrop-filter: blur(var(--blur-strong)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(1.2);
+
+  color: rgba(255,255,255,.88);
+  box-shadow: var(--shadow-md);
+
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+:root[data-theme="light"] .creditBubble{
+  background: rgba(255,255,255,.82);
+  color: rgba(10,20,48,.88);
+}
+
+.creditWrap:hover .creditBubble,
+.creditWrap:focus-within .creditBubble{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.creditBubble a{
+  color: inherit;
   text-decoration: none;
   border-bottom: 1px dashed rgba(255,255,255,.28);
 }
 
-:root[data-theme="light"] .credit a{
+:root[data-theme="light"] .creditBubble a{
   border-bottom-color: rgba(10,20,48,.25);
 }
 
-.credit a:hover{
+.creditBubble a:hover{
   border-bottom-color: rgba(255,255,255,.60);
 }
 
-:root[data-theme="light"] .credit a:hover{
+:root[data-theme="light"] .creditBubble a:hover{
   border-bottom-color: rgba(10,20,48,.45);
 }
+
+.creditHint{ opacity: .75 }
 

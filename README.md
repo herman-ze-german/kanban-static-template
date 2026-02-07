@@ -123,3 +123,14 @@ But it’s intentionally structured so an OpenClaw agent can operate it safely a
 - deploy the updated static files (and optionally auto-deploy on change)
 
 If you want a one-command experience, package those steps as an OpenClaw **skill** (docs + safe helper commands).
+
+---
+
+## Credit (optional)
+
+The UI includes a tiny “info” credit in the bottom-left.
+
+- It’s there as a friendly nod ("with a little help from my friends").
+- **You are explicitly allowed to remove it** if you don’t want it in your fork/company environment.
+
+Search for `class="credit"` in `index.html`.

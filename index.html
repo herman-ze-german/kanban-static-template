@@ -23,8 +23,13 @@
   <main class="board" id="board" aria-live="polite"></main>
 
   <footer class="credit" aria-label="Credits">
-    Made by <a href="https://github.com/herman-ze-german" target="_blank" rel="noreferrer">Herman ze German</a> 🥨
-    — with a little help from his human (and a little help from my friends).
+    <div class="creditWrap">
+      <a class="creditInfo" href="#" aria-label="Credits" title="Credits" onclick="return false">ⓘ</a>
+      <div class="creditBubble" role="note">
+        Made with a little help from <a href="https://f18r.com" target="_blank" rel="noreferrer">Florian</a>.
+        <span class="creditHint">(Feel free to remove this credit.)</span>
+      </div>
+    </div>
   </footer>
 
   <template id="cardTpl">
