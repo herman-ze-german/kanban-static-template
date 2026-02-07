@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Static Kanban Board</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="titlewrap">
+      <h1 id="boardTitle">Static Kanban Board</h1>
+      <div class="subtitle">
+        <span id="updatedAt">—</span>
+        <span class="dot">•</span>
+        <button id="themeBtn" class="btn" type="button" title="Toggle light/dark">Light</button>
+        <button id="reloadBtn" class="btn" type="button" title="Reload board.json">Reload</button>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </header>
+
+  <main class="board" id="board" aria-live="polite"></main>
+
+  <template id="cardTpl">
+    <article class="card">
+      <div class="cardTop">
+        <div class="badge" data-role="projectBadge"></div>
+        <div class="pri" data-role="priority"></div>
+      </div>
+      <h3 class="cardTitle" data-role="title"></h3>
+      <p class="cardDesc" data-role="description"></p>
+      <div class="tagRow" data-role="tags"></div>
+      <div class="links" data-role="links"></div>
+      <footer class="cardFooter">
+        <div class="meta">
+          <span data-role="owner"></span>
+          <span class="dot">•</span>
+          <time data-role="updated"></time>
+        </div>
+      </footer>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

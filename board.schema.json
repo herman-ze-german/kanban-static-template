@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Herman's Kanban board",
+  "type": "object",
+  "required": ["projects", "columns", "cards"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "title": {"type": "string"},
+        "updatedAt": {"type": "string", "description": "ISO-8601 timestamp"}
+      },
+      "additionalProperties": true
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "color"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "color": {"type": "string", "description": "CSS color (e.g. #7c3aed)"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string", "enum": ["backlog", "blocked", "in_progress", "done"]},
+          "name": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "projectId", "columnId", "updatedAt"],
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "description": {"type": "string"},
+          "projectId": {"type": "string"},
+          "columnId": {"type": "string", "enum": ["backlog", "blocked", "in_progress", "done"]},
+          "priority": {"type": "string", "enum": ["P0", "P1", "P2", "P3"], "default": "P2"},
+          "tags": {"type": "array", "items": {"type": "string"}},
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "url"],
+              "properties": {
+                "label": {"type": "string"},
+                "url": {"type": "string"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "owner": {"type": "string", "description": "Optional: Florian|Herman|..."},
+          "estimate": {"type": "string", "description": "Optional: e.g. 2h, 1d"},
+          "createdAt": {"type": "string", "description": "ISO-8601 timestamp"},
+          "updatedAt": {"type": "string", "description": "ISO-8601 timestamp"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

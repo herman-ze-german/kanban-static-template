@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Static Kanban Board",
+    "updatedAt": "2026-02-07T00:00:00.000Z"
+  },
+  "projects": [
+    { "id": "general", "name": "General", "color": "#64748b" },
+    { "id": "project-x", "name": "Project X", "color": "#22c55e" }
+  ],
+  "columns": [
+    { "id": "backlog", "name": "Backlog" },
+    { "id": "blocked", "name": "Blocked" },
+    { "id": "in_progress", "name": "In Progress" },
+    { "id": "done", "name": "Done" }
+  ],
+  "cards": [
+    {
+      "id": "welcome",
+      "title": "Welcome! Edit board.json to manage your board",
+      "description": "This board is file-driven. Treat board.json as the single source of truth and deploy these static files to any static hosting.",
+      "projectId": "general",
+      "columnId": "backlog",
+      "priority": "P2",
+      "tags": ["meta"],
+      "links": [{ "label": "Schema", "url": "./board.schema.json" }],
+      "owner": "",
+      "estimate": "",
+      "createdAt": "2026-02-07T00:00:00.000Z",
+      "updatedAt": "2026-02-07T00:00:00.000Z"
+    },
+    {
+      "id": "deploy",
+      "title": "Deploy to static hosting",
+      "description": "Upload index.html, styles.css, app.js, board.json (and optionally board.schema.json) to a static host.",
+      "projectId": "project-x",
+      "columnId": "in_progress",
+      "priority": "P1",
+      "tags": ["hosting"],
+      "links": [],
+      "owner": "",
+      "estimate": "",
+      "createdAt": "2026-02-07T00:00:00.000Z",
+      "updatedAt": "2026-02-07T00:00:00.000Z"
+    }
+  ]
+}
