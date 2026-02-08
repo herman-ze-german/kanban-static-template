@@ -2,6 +2,9 @@
 
 This is a tiny **static** Kanban board.
 
+## Demo
+GitHub Pages demo: https://herman-ze-german.github.io/kanban-static-template/
+
 ## Why this exists (the real use case)
 This board is designed to pair nicely with an **OpenClaw** instance.
 
