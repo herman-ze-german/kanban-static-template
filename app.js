@@ -1,5 +1,8 @@
 const BOARD_URL = './board.json';
 
+const LS_THEME = 'hk_theme';
+const LS_PROJECT = 'hk_project';
+
 function el(tag, attrs = {}, children = []) {
   const n = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -43,20 +46,65 @@ function normalize(board) {
   return { meta: board.meta ?? {}, projects: [...projects.values()], columns, cards };
 }
 
-function renderLegend(projects) {
+function getProjectFromUrl(projectIds) {
+  try {
+    const v = new URLSearchParams(location.search).get('project');
+    if (!v || v === 'all') return null;
+    return projectIds.has(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function setProjectInUrl(projectId) {
+  try {
+    const url = new URL(location.href);
+    if (!projectId) url.searchParams.delete('project');
+    else url.searchParams.set('project', projectId);
+    history.replaceState({}, '', url.toString());
+  } catch {}
+}
+
+function getSavedProject(projectIds) {
+  try {
+    const v = localStorage.getItem(LS_PROJECT);
+    if (!v || v === 'all') return null;
+    return projectIds.has(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveProject(projectId) {
+  try {
+    if (!projectId) localStorage.removeItem(LS_PROJECT);
+    else localStorage.setItem(LS_PROJECT, projectId);
+  } catch {}
+}
+
+function renderLegend(projects, selectedProjectId, onSelect) {
   const legend = document.getElementById('legend');
   legend.innerHTML = '';
   for (const p of projects) {
     const sw = el('span', { class: 'legendSwatch' });
     sw.style.background = p.color;
-    legend.appendChild(el('div', { class: 'legendItem' }, [
+
+    const btn = el('button', {
+      class: `legendItem ${selectedProjectId === p.id ? 'active' : ''}`,
+      type: 'button',
+      title: `Filter: ${p.name}`,
+      'data-project-id': p.id
+    }, [
       sw,
       el('span', { text: p.name })
-    ]));
+    ]);
+
+    btn.addEventListener('click', () => onSelect(p.id));
+    legend.appendChild(btn);
   }
 }
 
-function render(board) {
+function render(board, { selectedProjectId = null } = {}) {
   const title = document.getElementById('boardTitle');
   const updatedAt = document.getElementById('updatedAt');
   const container = document.getElementById('board');
@@ -66,8 +114,12 @@ function render(board) {
 
   container.innerHTML = '';
 
+  const visibleCards = selectedProjectId
+    ? board.cards.filter(c => c.projectId === selectedProjectId)
+    : board.cards;
+
   const byCol = new Map(board.columns.map(c => [c.id, []]));
-  for (const card of board.cards) {
+  for (const card of visibleCards) {
     if (!byCol.has(card.columnId)) byCol.set(card.columnId, []);
     byCol.get(card.columnId).push(card);
   }
@@ -152,7 +204,7 @@ async function loadBoard() {
 function setTheme(theme) {
   const t = (theme === 'light') ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', t);
-  try { localStorage.setItem('hk_theme', t); } catch {}
+  try { localStorage.setItem(LS_THEME, t); } catch {}
   const btn = document.getElementById('themeBtn');
   if (btn) btn.textContent = (t === 'light') ? 'Dark' : 'Light';
 }
@@ -160,7 +212,7 @@ function setTheme(theme) {
 function initTheme() {
   let t = 'dark';
   try {
-    t = localStorage.getItem('hk_theme') || 'dark';
+    t = localStorage.getItem(LS_THEME) || 'dark';
   } catch {}
   // If user never set it, follow OS preference.
   if (!t || (t !== 'light' && t !== 'dark')) {
@@ -186,8 +238,28 @@ async function boot() {
   try {
     const raw = await loadBoard();
     const board = normalize(raw);
-    renderLegend(board.projects);
-    render(board);
+
+    const projectIds = new Set(board.projects.map(p => p.id));
+    let selectedProjectId = getProjectFromUrl(projectIds) ?? getSavedProject(projectIds);
+
+    const projectResetBtn = document.getElementById('projectResetBtn');
+    const apply = (newProjectId) => {
+      selectedProjectId = newProjectId;
+      saveProject(selectedProjectId);
+      setProjectInUrl(selectedProjectId);
+      renderLegend(board.projects, selectedProjectId, apply);
+      render(board, { selectedProjectId });
+      if (projectResetBtn) projectResetBtn.disabled = !selectedProjectId;
+    };
+
+    if (projectResetBtn) projectResetBtn.addEventListener('click', () => apply(null));
+
+    apply(selectedProjectId ?? null);
+
+    window.addEventListener('popstate', () => {
+      const fromUrl = getProjectFromUrl(projectIds);
+      if (fromUrl !== selectedProjectId) apply(fromUrl);
+    });
   } catch (err) {
     console.error(err);
     const container = document.getElementById('board');
